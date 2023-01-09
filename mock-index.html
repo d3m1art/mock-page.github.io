@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <title>Mock Page for the Payjunction Extension</title>
+  <style>
+    .styled-table {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+      font-family: sans-serif;
+      min-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .styled-table th,
+    .styled-table td {
+      padding: 12px 15px;
+    }
+
+    .styled-table tbody tr {
+      border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+      border-bottom: 2px solid #009879;
+    }
+  </style>
+</head>
+
+<body style="display: flex;">
+  <div class="container">
+    <br />
+    <br />
+    <div class="text-center mt-5">
+      <p class="lead">Mock Page for the Payjunction Extension</p>
+    </div>
+    <br />
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse1">Doctor Chrono billing layout</a>
+          </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="row-fluid ng-scope" ng-if="patient.id &amp;&amp; current_tab!='balance'">
+              <div class="table_container" style="margin-bottom: 15px">
+                <table class="table table-condensed table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th class="center" style="width: 15%">Total Paid</th>
+                      <th class="center" style="width: 15%">Allocated Payment (Paid to Appt)</th>
+                      <th class="center" style="width: 15%">Unallocated Payment</th>
+                      <th class="center" style="width: 15%">Statement Balance</th>
+                      <th class="center" style="width: 15%">Total Balance</th>
+                      <!-- ngIf: auto_allocation.enabled -->
+                      <th ng-if="auto_allocation.enabled" class="ng-scope"></th>
+                      <!-- end ngIf: auto_allocation.enabled -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td data-name="full-name" class="ng-binding">Sandra (Demo) Bautista</td>
+                      <td class="total-paid" class="center ng-binding">$15,339.92</td>
+                      <td ng-model="allocated-payment" class="center ng-binding">$8,343.49</td>
+                      <td data-name="unallocated-payment" class="center ng-binding">$6,996.43</td>
+                      <td class="center ng-binding">
+                        <form name="statement-balance" data-name="transaction-amount">
+                          $316.64
+                        </form>
+                      </td>
+                      <td id="total-balance"
+                        class="center ng-binding">-$679.79</td>
+                      <!-- ngIf: auto_allocation.enabled -->
+                      <td class="center ng-scope" ng-if="auto_allocation.enabled">
+                        <button class="btn btn-small btn-link" ng-click="autoFill()" confirm-click="Are you sure?">
+                          <i class="icon-refresh"></i>
+                          Auto Fill
+                        </button>
+                      </td><!-- end ngIf: auto_allocation.enabled -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="tab-content">
+                <div ng-show="current_tab=='payments'">
+                  <div class="row-fluid">
+                    <div class="btn-toolbar pull-left" style="margin-bottom: 10px;">
+                      <div class="btn-group" style="margin-bottom: 0 !important">
+                        <button data-name="print-export-button" class="btn dropdown-toggle" data-toggle="dropdown">
+                          Print/Export
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a ng-click="printPaymentsReceipt()"><i class="icon-print"></i>
+                              Print Selected Receipts</a></li>
+                          <li><a ng-click="exportPaymentsCsv()"><i class="icon-file"></i>
+                              Export to CSV</a></li>
+                        </ul>
+                      </div>
+                      <div class="btn-group">
+                        <button data-name="add-button" class="btn btn-success" ng-click="startCreate()"
+                          onclick="createCollapse1Modal()" data-toggle="modal" data-target="#Collapse1Modal"><i
+                            class="icon-plus"></i> Add
+                        </button>
+                      </div>
+
+                    </div>
+                    <div class="table_container ng-hide" ng-hide="toggleLayered">
+                      <form novalidate="" name="paymentForm" ng-model="paymentForm" style="margin-bottom: 0"
+                        class="ng-pristine ng-untouched ng-valid ng-not-empty">
+                        <table class="table table-striped table-condensed table-bordered">
+                          <thead>
+                            <tr>
+                              <th><input type="checkbox" ng-click="toggleAll(allSelect)" ng-model="allSelect"
+                                  class="ng-pristine ng-untouched ng-valid ng-empty"></th>
+                              <th class="left">
+                                <sort-glyph display="Posted Date" getter="'posted_date'" state="sortState"
+                                  class="ng-isolate-scope"><a class="ng-binding">Posted Date</a>&nbsp;<span
+                                    ng-show="state.propertyGetter === getter" class="ng-hide"><span class="icon-sort-up"
+                                      ng-hide="state.reverse"></span><span class="icon-sort-down ng-hide"
+                                      ng-show="state.reverse"></span></span>
+                                </sort-glyph>
+                              </th>
+                              <th class="left">
+                                <sort-glyph display="Payment Date" getter="'received_date'" state="sortState"
+                                  class="ng-isolate-scope"><a class="ng-binding">Payment Date</a>&nbsp;<span
+                                    ng-show="state.propertyGetter === getter" class="ng-hide"><span class="icon-sort-up"
+                                      ng-hide="state.reverse"></span><span class="icon-sort-down ng-hide"
+                                      ng-show="state.reverse"></span></span>
+                                </sort-glyph>
+                              </th>
+                              <th class="left">Appointment</th>
+                              <th class="left">Line Item</th>
+
+                              <th class="left">
+                                <sort-glyph display="Payment Method" getter="'payment_method'" state="sortState"
+                                  class="ng-isolate-scope"><a class="ng-binding">Payment
+                                    Method</a>&nbsp;<span ng-show="state.propertyGetter === getter"
+                                    class="ng-hide"><span class="icon-sort-up" ng-hide="state.reverse"></span><span
+                                      class="icon-sort-down ng-hide" ng-show="state.reverse"></span></span>
+                                </sort-glyph>
+                              </th>
+                              <th class="left">
+                                <sort-glyph display="Type" getter="'payment_transaction_type'" state="sortState"
+                                  class="ng-isolate-scope"><a class="ng-binding">Type</a>&nbsp;<span
+                                    ng-show="state.propertyGetter === getter" class="ng-hide"><span class="icon-sort-up"
+                                      ng-hide="state.reverse"></span><span class="icon-sort-down ng-hide"
+                                      ng-show="state.reverse"></span></span>
+                                </sort-glyph>
+                              </th>
+                              <th class="left">Notes</th>
+                              <th class="right">
+                                <sort-glyph display="Amount" getter="convertAmount" state="sortState"
+                                  class="ng-isolate-scope"><a class="ng-binding">Amount</a>&nbsp;<span
+                                    ng-show="state.propertyGetter === getter" class="ng-hide"><span class="icon-sort-up"
+                                      ng-hide="state.reverse"></span><span class="icon-sort-down ng-hide"
+                                      ng-show="state.reverse"></span></span>
+                                </sort-glyph>
+                              </th>
+                              <th></th>
+
+                              <th class="left ng-hide" ng-show="toggleInternal">Payment ID
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="p in cashpayments | orderBy:sortState.propertyGetter:sortState.reverse"
+                              id="109879774" class="ng-scope">
+                              <td><input type="checkbox" ng-model="p.selected"
+                                  class="ng-pristine ng-untouched ng-valid ng-empty"></td>
+                              <td class="left ng-binding">Sep 3, 2022</td>
+                              <td class="left ng-binding">Sep 1, 2022</td>
+                              <td class="left">
+                                <!-- ngIf: p.appointment_id --><a ng-if="p.appointment_id" target="_blank"
+                                  class="ng-binding ng-scope">8/10/2022 12:00PM</a>
+                                <!-- end ngIf: p.appointment_id -->
+                              </td>
+                              <td class="left">
+                                <!-- ngIf: p.line_item_id --><a ng-if="p.line_item_id" target="_blank"
+                                  class="ng-binding ng-scope" id="invoice-number">
+                                  76881
+                                </a><!-- end ngIf: p.line_item_id -->
+                              </td>
+
+                              <td class="left ng-binding">
+                                Credit Card
+                                <!-- ngIf: p.payment_method=='CHCK' && p.trace_number -->
+                              </td>
+                              <td class="left ng-binding">
+                                Credit
+                              </td>
+                              <td class="center">
+                                <!-- ngIf: p.notes --><span ng-if="p.notes" ng-tooltip="p.notes"
+                                  class="icon-info-sign ng-scope" data-original-title=""></span>
+                                <!-- end ngIf: p.notes -->
+                              </td>
+                              <td class="right">
+                                <span data-placement="left" class="ng-binding">$0.01<span>
+                                  </span></span>
+                              </td>
+                              <td class="center" style="padding-top: 2px; padding-bottom: 2px">
+                                <a ng-disabled="p.is_counter_balance || p.available == 0.00"
+                                  ng-click="p.available == 0.00 || startMove(p)" class="btn btn-mini btn-link"
+                                  ng-tooltip="'Move remaining ' + (p.available|currency)" data-original-title="">
+                                  <i class="icon-download"></i>
+                                </a>
+                                <a target="_blank" class="btn btn-link btn-mini"><i class="icon-print"></i>Receipt</a>
+
+                              </td>
+                              <td ng-show="toggleInternal" class="center ng-hide"
+                                style="padding-top: 2px; padding-bottom: 2px">
+                                <!-- ngIf: true -->
+                                <div ng-if="true" class="btn btn-mini btn-link ng-scope ng-binding"
+                                  ng-tooltip="'Copy to clipboard'" copy-to-clipboard="" data-original-title=""
+                                  id="purchase-order">
+                                  109879774
+                                </div><!-- end ngIf: true -->
+                              </td>
+                            </tr>
+                            <tr ng-repeat="p in cashpayments | orderBy:sortState.propertyGetter:sortState.reverse"
+                              id="109879773" class="ng-scope">
+                              <td><input type="checkbox" ng-model="p.selected"
+                                  class="ng-pristine ng-untouched ng-valid ng-empty"></td>
+                              <td class="left ng-binding">Sep 3, 2022</td>
+                              <td class="left ng-binding">Sep 1, 2022</td>
+                              <td class="left">
+                                <!-- ngIf: p.appointment_id --><a ng-if="p.appointment_id" target="_blank"
+                                  class="ng-binding ng-scope">8/10/2022 12:00PM</a>
+                                <!-- end ngIf: p.appointment_id -->
+                              </td>
+                              <td class="left">
+                                <!-- ngIf: p.line_item_id --><a ng-if="p.line_item_id" target="_blank"
+                                  class="ng-binding ng-scope" id="customer-id">
+                                  99245
+                                </a><!-- end ngIf: p.line_item_id -->
+                              </td>
+
+                              <td class="left ng-binding">
+                                Credit Card
+                                <!-- ngIf: p.payment_method=='CHCK' && p.trace_number -->
+                              </td>
+                              <td class="left ng-binding">
+                                Credit
+                              </td>
+                              <td class="center">
+                                <!-- ngIf: p.notes --><span ng-if="p.notes" ng-tooltip="p.notes"
+                                  class="icon-info-sign ng-scope" data-original-title=""></span>
+                                <!-- end ngIf: p.notes -->
+                              </td>
+                              <td class="right">
+                                <span data-placement="left" class="ng-binding">-$0.01<span>
+                                  </span></span>
+                              </td>
+                              <td class="center" style="padding-top: 2px; padding-bottom: 2px">
+                                <a ng-disabled="p.is_counter_balance || p.available == 0.00"
+                                  ng-click="p.available == 0.00 || startMove(p)" class="btn btn-mini btn-link"
+                                  ng-tooltip="'Move remaining ' + (p.available|currency)" data-original-title=""
+                                  disabled="disabled">
+                                  <i class="icon-download"></i>
+                                </a>
+                                <a target="_blank" class="btn btn-link btn-mini"><i class="icon-print"></i>Receipt</a>
+
+                              </td>
+                              <td ng-show="toggleInternal" class="center ng-hide"
+                                style="padding-top: 2px; padding-bottom: 2px">
+                                <!-- ngIf: true -->
+                                <div ng-if="true" class="btn btn-mini btn-link ng-scope ng-binding"
+                                  ng-tooltip="'Copy to clipboard'" copy-to-clipboard="" data-original-title="">
+                                  109879773
+                                </div><!-- end ngIf: true -->
+                              </td>
+                            </tr>
+                            <tr ng-repeat="p in cashpayments | orderBy:sortState.propertyGetter:sortState.reverse"
+                              id="109693328" class="ng-scope">
+                              <td><input type="checkbox" ng-model="p.selected"
+                                  class="ng-pristine ng-untouched ng-valid ng-empty"></td>
+                              <td class="left ng-binding">Sep 1, 2022</td>
+                              <td class="left ng-binding">Sep 1, 2022</td>
+                              <td class="left">
+                                <a ng-if="p.appointment_id" target="_blank" class="ng-binding ng-scope">8/10/2022
+                                  12:00PM</a>
+                              </td>
+                              <td class="left">
+                                <a ng-if="p.line_item_id" target="_blank" class="ng-binding ng-scope">
+                                  99245
+                                </a>
+                              </td>
+
+                              <td class="left ng-binding">
+                                Credit Card
+                              </td>
+                              <td class="left ng-binding">
+                                Credit
+                              </td>
+                              <td class="center">
+                                <span ng-if="p.notes" ng-tooltip="p.notes" class="icon-info-sign ng-scope"
+                                  data-original-title=""></span>
+                              </td>
+                              <td class="right">
+                                <span data-placement="left" class="ng-binding">$0.01<span>
+                                  </span></span>
+                              </td>
+                              <td class="center" style="padding-top: 2px; padding-bottom: 2px">
+                                <a ng-disabled="p.is_counter_balance || p.available == 0.00"
+                                  ng-click="p.available == 0.00 || startMove(p)" class="btn btn-mini btn-link"
+                                  ng-tooltip="'Move remaining ' + (p.available|currency)" data-original-title=""
+                                  disabled="disabled">
+                                  <i class="icon-download"></i>
+                                </a>
+                                <a target="_blank" class="btn btn-link btn-mini"><i class="icon-print"></i>Receipt</a>
+
+                              </td>
+                              <td ng-show="toggleInternal" class="center ng-hide"
+                                style="padding-top: 2px; padding-bottom: 2px">
+                                <div ng-if="true" class="btn btn-mini btn-link ng-scope ng-binding"
+                                  ng-tooltip="'Copy to clipboard'" copy-to-clipboard="" data-original-title="">
+                                  109693328
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </form>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">Source: <a
+                href="https://econduit.drchrono.com/billing/patient_payments_v2?patient_id=84221239"
+                target="_blank">https://econduit.drchrono.com/billing/patient_payments_v2?patient_id=84221239</a>
+            </div>
+            <script>
+              function createCollapse1Modal() {
+                document.body.insertAdjacentHTML("beforeEnd", `<div style="display: unset" class="modal fade" id="Collapse1Modal" role="dialog" aria-labelledby="Collapse1ModalLabel"
+
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" onclick="removeCollapse1Modal()" data-dismiss="modal" ng-click="$ctrl.cancel()" aria-hidden="true">×
+                                        </button>
+                                        <h3 class="ng-binding">
+                                            New Cash
+                                        </h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal ng-pristine ng-invalid ng-invalid-required" name="newCashForm">
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Payment Date</label>
+                                                <div class="controls">
+                                                    <input name="new_payment_posted_date" ng-model="$ctrl.new_payment.received_date"
+                                                        date-picker="" type="text" placeholder="MM/DD/YYYY" required=""
+                                                        class="ng-pristine ng-untouched ng-valid hasDatepicker ng-not-empty ng-valid-required"
+                                                        id="dp1667213626101">
+                                                    <span class="label label-error ng-hide"
+                                                        ng-show="$ctrl.new_payment.posted_date_error">Error</span>
+                                                    <span class="label label-warning ng-hide"
+                                                        ng-show="newCashForm.$dirty &amp;&amp; newCashForm.new_payment_posted_date.$error.required">Required</span>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Appointment</label>
+                                                <div class="controls">
+                                                    <select ng-model="$ctrl.new_payment.appointment_id"
+                                                        ng-options="a.id as a.display disable when a.id==='' for a in $ctrl.appointments_list"
+                                                        ng-change="$ctrl.updateOptions($ctrl.new_payment)"
+                                                        class="ng-pristine ng-untouched ng-valid ng-empty">
+                                                        <option value="?" selected="selected"></option>
+                                                        <option label="- Unallocated/No Appointment -" value="object:null">- Unallocated/No
+                                                            Appointment -</option>
+                                                        <option disabled="" label="- With balance -" value="string:">-
+                                                            With balance -</option>
+                                                        <option label="10/27/2022 02:15PM ($40.74 - Balance Due)" value="number:229610358">
+                                                            10/27/2022 02:15PM ($40.74 -
+                                                            Balance Due)</option>
+                                                        <option label="9/30/2022 05:00PM ($2.50 - Balance Due)" value="number:226604770">
+                                                            9/30/2022 05:00PM ($2.50 - Balance
+                                                            Due)</option>
+                                                        <option label="9/16/2022 03:00PM ($100.33 - Balance Due)" value="number:225046732">
+                                                            9/16/2022 03:00PM ($100.33 -
+                                                            Balance Due)</option>
+                                                        <option label="9/15/2022 09:45AM ($88.05 - Balance Due)" value="number:224946590">
+                                                            9/15/2022 09:45AM ($88.05 - Balance
+                                                            Due)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Line Item</label>
+                                                <div class="controls">
+                                                    <select name="new_payment_line_item" ng-model="$ctrl.new_payment.line_item_id"
+                                                        ng-options="item.id as item.display for item in $ctrl.line_items_list"
+                                                        ng-change="$ctrl.updateAmount($ctrl.new_payment)"
+                                                        class="ng-pristine ng-untouched ng-valid ng-empty">
+                                                        <option label="-No Line Item-" value="object:null" selected="selected">-No Line Item-
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Provider</label>
+                                                <div class="controls">
+                                                    <select ng-model="$ctrl.new_payment.doctor_id"
+                                                        ng-options="doctor.id as doctor.name for doctor in $ctrl.doctor_set"
+                                                        class="ng-pristine ng-untouched ng-valid ng-empty">
+                                                        <option value="?" selected="selected"></option>
+                                                        <option label="mike cimilluca" value="number:251937">mike
+                                                            cimilluca</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Payment Method</label>
+                                                <div class="controls">
+                                                    <select data-name="payment-method" ng-model="$ctrl.new_payment.method"
+                                                        ng-options="pm.value as pm.label for pm in $ctrl.payment_set"
+                                                        class="ng-pristine ng-untouched ng-valid ng-empty">
+                                                        <option value="" selected="selected" class="">- Select Type -
+                                                        </option>
+                                                        <option label="Cash" value="string:CASH">Cash</option>
+                                                        <option label="Check" value="string:CHCK">Check</option>
+                                                        <option label="Debit" value="string:DBIT">Debit</option>
+                                                        <option label="Credit Card" value="string:CRDT">Credit Card
+                                                        </option>
+                                                        <option label="American Express" value="string:AMEX">American
+                                                            Express</option>
+                                                        <option label="Visa" value="string:VISA">Visa</option>
+                                                        <option label="Mastercard" value="string:MSTR">Mastercard
+                                                        </option>
+                                                        <option label="Discover" value="string:DISC">Discover</option>
+                                                        <option label="Square (Legacy)" value="string:SQR1">Square
+                                                            (Legacy)</option>
+                                                        <option label="Square" value="string:SQRE">Square</option>
+                                                        <option label="Patient Payments" value="string:PTPA">Patient
+                                                            Payments</option>
+                                                        <option label="onpatient" value="string:ONPT">onpatient</option>
+                                                        <option label="Other" value="string:OTHR">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Type</label>
+                                                <div class="controls">
+                                                    <select data-name="payment-type" ng-model="$ctrl.new_payment.type"
+                                                        ng-options="pt.value as pt.label for pt in $ctrl.payment_transaction_type_set"
+                                                        ng-change="$ctrl.enforceType()" class="ng-pristine ng-untouched ng-valid ng-empty">
+                                                        <option label="Credit" value="string:" selected="selected">Credit</option>
+                                                        <option label="Refund" value="string:REF">Refund</option>
+                                                        <option label="Correction" value="string:COR">Correction
+                                                        </option>
+                                                        <option label="Copay" value="string:COPAY">Copay</option>
+                                                        <option label="Coinsurance" value="string:COINSR">Coinsurance
+                                                        </option>
+                                                        <option label="Other" value="string:OTHR">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Notes</label>
+                                                <div class="controls">
+                                                    <textarea type="text" ng-model="$ctrl.new_payment.notes"
+                                                        class="clearable ng-pristine ng-untouched ng-valid ng-empty"></textarea>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="control-group">
+                                                <label class="control-label">Amount</label>
+                                                <div class="controls">
+                                                    <div class="input-prepend">
+                                                        <span class="add-on">$</span>
+                                                        <input type="number" name="new_payment_amount" ng-model="$ctrl.new_payment.amount"
+                                                            step="any"
+                                                            class="input-small ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+                                                            required=""
+                                                            ng-change="$ctrl.updateAllocations() &amp;&amp; $ctrl.updateTransactionType()">
+                                                    </div>
+                                                    <span class="label label-warning ng-hide"
+                                                        ng-show="newCashForm.$dirty &amp;&amp; newCashForm.new_payment_amount.$error.required">Required</span>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="cancel-modal" class="btn" ng-click="$ctrl.cancel()" ng-disabled="$ctrl.loading" onclick="removeCollapse1Modal()"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-primary" ng-click="$ctrl.process()"
+                                            ng-disabled="newCashForm.$invalid || $ctrl.loading"
+                                            ng-hide="$ctrl.new_payment.method=='SQRE' || $ctrl.new_payment.method=='PSMP'" data-dismiss="modal" onclick="removeCollapse1Modal()">
+                                            <i ng-show="$ctrl.loading" class="icon-spinner icon-spin ng-hide"></i>
+                                            <span>Add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`);
+              }
+
+
+              function removeCollapse1Modal() {
+                document.getElementById("Collapse1Modal").remove();
+              }
+
+              window.onload = () => {
+                const inputEmail = document.getElementsByName('paymentEmail')[0];
+                inputEmail.value  = 'test@test.com';                
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse2">URL pre-population test</a>
+          </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+          <div class="panel-body">
+            <a name="another-page" href="mock-another-page.html?success=false">Go to another page</a>
+          </div>
+          <div class="panel-body">
+            <a name="client-map-one-client" href="mock-another-page.html?patient_id=84221239">Client map display (with one client)</a>
+          </div>
+          <div class="panel-body">
+            <a name="client-map-many-client" href="mock-another-page.html?patient_id=84221237">Client map display (With many customers)</a>
+          </div>
+          <div class="panel-body">
+            <a name="client-map-without-client" href="mock-another-page.html?patient_id=84221242">Client map display (Without customers)</a>
+          </div>
+          <div class="panel-footer">Source: no references
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse3">List of mapping fields</a>
+          </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table class="styled-table">
+              <tbody>
+                <tr>
+                  <td>Transaction Amount</td>
+                  <td data-name="test_mapping_transaction_amount">
+                    $316.64
+                  </td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td data-name="test_mapping_email">
+                    test@email.com
+                  </td>
+                </tr>
+                <tr>
+                  <td>Invoice Number</td>
+                  <td data-name="test_mapping_invoice_number">
+                    12345
+                  </td>
+                </tr>
+                <tr>
+                  <td>Purchase Number</td>
+                  <td data-name="test_mapping_purchase_order_number">
+                    54321
+                  </td>
+                </tr>
+                <tr>
+                  <td>Customer id</td>
+                  <td data-name="test_mapping_customer_id">
+                    777
+                  </td>
+                </tr>
+                <tr>
+                  <td>Phone</td>
+                  <td data-name="test_mapping_phone">
+                    +13891823918
+                  </td>
+                </tr>
+                <tr>
+                  <td>First Name</td>
+                  <td data-name="test_mapping_first_name">
+                    Fill
+                  </td>
+                </tr>
+                <tr>
+                  <td>Last Name</td>
+                  <td data-name="test_mapping_last_name">
+                    Spenser
+                  </td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td data-name="test_mapping_address">
+                    Redmond, Washington, USA
+                  </td>
+                </tr>
+                <tr>
+                  <td>Zip</td>
+                  <td data-name="test_mapping_zip">
+                    98052
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel-footer">Source: no references
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse4">Email in input</a>
+          </h4>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group ng-scope">
+              <label for="paymentEmail">
+                <span data-label=""></span>
+                <span class="labelHelp"></span>
+              </label>
+              <input type="email"
+                class="form-control ng-not-empty ng-valid ng-valid-email ng-valid-required ng-valid-maxlength ng-touched payjunction-highlight payjunction-paths.email.value"
+                maxlength="100" ema-field-wrapper="" id-as-name="" style="width: 277px;"
+                ng-model="$ctrl.email" ng-disabled="!$ctrl.sendEmail" ng-required="$ctrl.sendEmail" hide-required="true"
+                enable-validation="$ctrl.sendEmail" name="paymentEmail" autocomplete="nope" required="required" id="paymentEmail">
+              <!-- ngIf: ctrl.makePaymentForm.$submitted || ctrl.makePaymentForm.paymentEmail.$touched -->
+            </div>
+          </div>
+          <div class="panel-footer">Source: <a href="https://waveoc2.atlassian.net/browse/PCE-460"
+              target="_blank">https://waveoc2.atlassian.net/browse/PCE-460</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
